@@ -11,11 +11,6 @@ var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/nodetest1');
 
-// Make our db accessible to our router
-app.use(function(req, res, next) {
-    req.db = db;
-    next();
-});
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -31,6 +26,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Make our db accessible to our router
+app.use(function(req, res, next) {
+    req.db = db;
+    next();
+});
 
 // Tell Express what route files to use
 app.use('/', indexRouter);
